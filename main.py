@@ -1,5 +1,5 @@
 from file_reader import read_matrix
-from johnson import Job, johnson_algorithm, max_downtime, time, johnson_condition
+from johnson import Job, johnson_algorithm, max_downtime, time, johnson_condition, time3x
 from brute_force import lexigraphic_permutations
 from painter import paint
 
@@ -25,21 +25,32 @@ def main():
 
     # Выбор метода по условию Джонсона
     if johnson_condition(original_jobs) or len(matrix[0]) == 2:
-        print('Johnson')
+        print('Method: Johnson')
         johnson_schedule = johnson_algorithm(jobs=jobs)
-        print(johnson_schedule)
         optimal_schedule = []
         for i in range(len(johnson_schedule)):
             for j in range(len(jobs_copy)):
                 if johnson_schedule[i].index == jobs_copy[j].index:
                     optimal_schedule.append(jobs_copy[j])
     else:
-        print('Lexigraphic')
+        print('Method: Lexigraphic')
         optimal_schedule = lexigraphic_permutations(jobs=original_jobs)
 
+    if len(matrix[0]) == 2:
+        t = time(original_jobs)
+        opt_time = time(optimal_schedule)
+        print(f'T(s_orig) = {t}')
+        print(f'T(s_opt) = {opt_time}')
+    elif len(matrix[0]) == 3:
+        t = time3x(original_jobs)
+        opt_time = time3x(optimal_schedule)
+        print(f'T(s_orig) = {t}')
+        print(f'T(s_opt) = {opt_time}')
+
+
     # просто вывод для отладки
-    print(optimal_schedule)
-    print(original_jobs)
+    #print(optimal_schedule)
+    #print(original_jobs)
     #max_start_downtime = max_downtime(jobs=jobs)
     #start_time = time(jobs=jobs)
     #optimal_schedule = johnson_algorithm(jobs=jobs)
